@@ -1,9 +1,10 @@
 import 'dart:developer';
-
+import 'package:blogs/Home/model/model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class apiservices {
-  void fetchBlogs() async {
+class ApiServices {
+  Future<List<Blogmodel>> fetchBlogs() async {
     const String url = 'https://intent-kit-16.hasura.app/api/rest/blogs';
     const String adminSecret =
         '32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6';
@@ -13,14 +14,23 @@ class apiservices {
         'x-hasura-admin-secret': adminSecret,
       });
 
+      // log('Response body: ${response.body}');
+      log('data fetched');
+
       if (response.statusCode == 200) {
-        print('Response data: ${response.body}');
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        // Adjust according to the actual key that contains the list
+        final List<dynamic> data = responseBody['data'] ?? [];
+        final List<Blogmodel> blogs =
+            data.map((e) => Blogmodel.fromJson(e)).toList();
+        return blogs;
       } else {
-        print('Request failed with status code: ${response.statusCode}');
-        print('Response data: ${response.body}');
+        log('Request failed with status code: ${response.statusCode}');
+        return [];
       }
     } catch (e) {
-      log('An error occured..');
+      log('An error occurred: $e');
+      return [];
     }
   }
 }

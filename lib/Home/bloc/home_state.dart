@@ -9,8 +9,12 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeSuccess extends HomeState {}
+class HomeSuccess extends HomeState {
+  final List<Blogmodel> blogs;
+
+  HomeSuccess({required this.blogs});
+}
 
 class HomeFail extends HomeState {}
 
-class HomeToFav extends HomeActionState {}
+class HomeToFavActionState extends HomeActionState {}
