@@ -19,8 +19,7 @@ class ApiServices {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = json.decode(response.body);
-        // Adjust according to the actual key that contains the list
-        final List<dynamic> data = responseBody['data'] ?? [];
+        final List<dynamic> data = responseBody['blogs'] ?? [];
         final List<Blogmodel> blogs =
             data.map((e) => Blogmodel.fromJson(e)).toList();
         return blogs;
